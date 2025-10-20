@@ -48,14 +48,17 @@ jobs:
           exit 1
         fi
         echo "Docker username is set (length: ${#DOCKER_USERNAME})"
+        echo "Username value: $DOCKER_USERNAME"
 
     - name: Login to Docker Hub
       run: echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
     - name: Build Docker image
       run: |
-        docker buildx build --platform linux/amd64 -t $DOCKER_USERNAME/kaiburr-task-manager:latest --load .
+        echo "Building image with tag: $DOCKER_USERNAME/kaiburr-task-manager:latest"
+        docker buildx build --platform linux/amd64 -t "$DOCKER_USERNAME/kaiburr-task-manager:latest" --load .
     
     - name: Push Docker image
       run: |
-        docker push $DOCKER_USERNAME/kaiburr-task-manager:latest
+        echo "Pushing image: $DOCKER_USERNAME/kaiburr-task-manager:latest"
+        docker push "$DOCKER_USERNAME/kaiburr-task-manager:latest"
