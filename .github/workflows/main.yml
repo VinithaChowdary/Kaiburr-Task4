@@ -1,5 +1,6 @@
 name: Java CI with Maven and Docker
 
+# This workflow builds the Java backend, React frontend, and Docker image
 on:
   push:
     branches: [ "main" ]
