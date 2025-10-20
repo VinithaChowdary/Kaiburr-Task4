@@ -98,6 +98,34 @@ Here are the available endpoints and examples of how to use them with `curl`.
 ### Execute a Task
 - **Endpoint**: `PUT /tasks/execute/{id}`
 - **Description**: Executes the shell command of the specified task and records the execution details.
+
+## CI-CD Pipeline (Task 4)
+
+This project includes a CI/CD pipeline using GitHub Actions to automate the build and deployment process. The pipeline is defined in `.github/workflows/main.yml`.
+
+### Pipeline Steps
+
+1.  **Checkout Code**: The workflow checks out the latest code from the repository.
+2.  **Set up JDK 17**: It sets up the Java environment to build the Spring Boot backend.
+3.  **Set up Node.js**: It sets up the Node.js environment to build the React frontend.
+4.  **Build Frontend**: It installs dependencies and builds the frontend application.
+5.  **Build with Maven**: It compiles and packages the backend Java application into a JAR file.
+6.  **Build and Push Docker Image**:
+    -   It builds a Docker image using the `Dockerfile` in the root directory.
+    -   The Docker image contains both the compiled frontend and the backend application.
+    -   The image is then pushed to Docker Hub.
+
+### How It Works
+
+-   The pipeline is triggered on every `push` or `pull_request` to the `main` branch.
+-   The Docker image is tagged with `latest` and pushed to a repository on Docker Hub.
+
+### Prerequisites for the Pipeline
+
+To use this pipeline, you need to configure the following secrets in your GitHub repository settings (`Settings > Secrets and variables > Actions`):
+
+-   `DOCKER_HUB_USERNAME`: Your Docker Hub username.
+-   `DOCKER_HUB_ACCESS_TOKEN`: An access token for your Docker Hub account with permissions to push images.
 - **Example**:
   ```bash
   curl -X PUT http://localhost:8081/tasks/execute/101
