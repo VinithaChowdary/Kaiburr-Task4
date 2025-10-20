@@ -50,15 +50,28 @@ jobs:
         echo "Docker username is set (length: ${#DOCKER_USERNAME})"
         echo "Username value: $DOCKER_USERNAME"
 
+    - name: Normalize Docker username
+      id: docker_user
+      run: |
+        CLEAN_USERNAME=$(printf "%s" "$DOCKER_USERNAME" | tr -d '\r\n ')
+        echo "Sanitized username length: ${#CLEAN_USERNAME}"
+        echo "username=$CLEAN_USERNAME" >> "$GITHUB_OUTPUT"
+
     - name: Login to Docker Hub
-      run: echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      run: echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_SANITIZED" --password-stdin
+      env:
+        DOCKER_SANITIZED: ${{ steps.docker_user.outputs.username }}
 
     - name: Build Docker image
+      env:
+        DOCKER_SANITIZED: ${{ steps.docker_user.outputs.username }}
       run: |
-        echo "Building image with tag: $DOCKER_USERNAME/kaiburr-task-manager:latest"
-        docker buildx build --platform linux/amd64 -t "$DOCKER_USERNAME/kaiburr-task-manager:latest" --load .
+        echo "Building image with tag: $DOCKER_SANITIZED/kaiburr-task-manager:latest"
+        docker buildx build --platform linux/amd64 -t "$DOCKER_SANITIZED/kaiburr-task-manager:latest" --load .
     
     - name: Push Docker image
+      env:
+        DOCKER_SANITIZED: ${{ steps.docker_user.outputs.username }}
       run: |
-        echo "Pushing image: $DOCKER_USERNAME/kaiburr-task-manager:latest"
-        docker push "$DOCKER_USERNAME/kaiburr-task-manager:latest"
+        echo "Pushing image: $DOCKER_SANITIZED/kaiburr-task-manager:latest"
+        docker push "$DOCKER_SANITIZED/kaiburr-task-manager:latest"
