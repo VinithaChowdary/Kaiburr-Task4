@@ -49,6 +49,20 @@ This project is a Java Spring Boot application that provides a REST API for crea
     ```
 The application will start on `http://localhost:8081`.
 
+Frontend
+--------
+A polished React 19 + TypeScript UX lives in `frontend/`, powered by Vite and Ant Design. Highlights include a searchable task table, drawer-based creation with validation, one-click execution, and a timeline drawer that captures the full command history.
+
+Quick start:
+
+1. cd frontend
+2. npm install
+3. npm run dev
+
+- Visit http://localhost:3000
+- The dev server proxies `/tasks` to `http://localhost:8081`
+- See `frontend/README.md` for detailed usage, accessibility notes, and production build instructions.
+
 ## API Endpoints and Usage
 
 Here are the available endpoints and examples of how to use them with `curl`.
@@ -58,7 +72,7 @@ Here are the available endpoints and examples of how to use them with `curl`.
 - **Description**: Creates a new task or updates an existing one. The task object is sent in the request body.
 - **Example**:
   ```bash
-  curl -X PUT http://localhost:8081/tasks -H "Content-Type: application/json" -d '{"id": "101", "name": "My Test Task", "owner": "Vinitha", "command": "echo Hello World"}'
+  curl -X PUT http://localhost:8081/tasks -H "Content-Type: application/json" -d '{"id": "101", "name": "My Test Task", "owner": "Balaji", "command": "echo Hello World"}'
   ```
 
 ### Get Tasks
